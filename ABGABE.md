@@ -10,7 +10,6 @@ Ergänzt eine Zeile pro Person, in Gruppe G also fünf. Verlinkt jeweils ein sel
 
 | GitHub-Benutzername | Eigener Beitrag | Eigenes Issue | Eigener PR |
 | --- | --- | --- | --- |
-| … | … | … | … |
 
 ## Aufgaben und Tests
 

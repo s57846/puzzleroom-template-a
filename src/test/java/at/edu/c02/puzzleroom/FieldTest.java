@@ -99,6 +99,43 @@ public class FieldTest {
 
         boolean success = player.moveRight();
         assertTrue(success);
+    }      
+      
+    // A · Einbahn: The player stands on `>` with a free field left and right of it
+    @Test
+    public void oneWayFieldLeaveInArrowDirection() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/oneWay.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+        // Walk onto the `>` field (row 1, column 3)
+        player.moveRight();
+        player.moveRight();
+        assertEquals(3, player.getCol());
+
+        // Moving right (arrow direction) is allowed
+        boolean success = player.moveRight();
+        assertTrue(success);
+        // Player now stands right of the arrow
+        assertEquals(1, player.getRow());
+        assertEquals(4, player.getCol());
+    }
+
+    @Test
+    public void oneWayFieldCannotLeaveAgainstArrowDirection() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/oneWay.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        // Walk onto the `>` field (row 1, column 3).
+        assertTrue(player.moveRight());
+        assertTrue(player.moveRight());
+        assertEquals(1, player.getRow());
+        assertEquals(3, player.getCol());
+
+        // The arrow blocks the move onto the free field to its left.
+        assertFalse(player.moveLeft());
+
+        // The rejected move leaves the player on the arrow.
         assertEquals(1, player.getRow());
         assertEquals(3, player.getCol());
     }
