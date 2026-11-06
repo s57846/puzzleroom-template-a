@@ -75,4 +75,19 @@ public class FieldTest {
         // Game should be finished after moving right twice
         assertTrue(gameBoard.isFinished());
     }
+
+    // B · Eis: `#o@@ x#` -> player slides over the ice and stops on the free field left of the finish
+    @Test
+    public void iceFieldStopsOnFreeField() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/iceFree.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        boolean success = player.moveRight();
+        assertTrue(success);
+        assertEquals(1, player.getRow());
+        assertEquals(1, player.getRow());
+        assertEquals(4, player.getCol());
+        assertFalse(gameBoard.isFinished());
+    }
 }

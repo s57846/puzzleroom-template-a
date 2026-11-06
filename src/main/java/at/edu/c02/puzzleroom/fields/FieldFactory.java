@@ -32,6 +32,7 @@ public class FieldFactory {
             case '#' -> new FieldWall(gameBoard, fieldName, row, col);
             case 'o' -> new FieldStart(gameBoard, fieldName, row, col);
             case 'x' -> new FieldFinish(gameBoard, fieldName, row, col);
+            case '@' -> new FieldIce(gameBoard, fieldName, row, col);
             default -> throw new PuzzleRoomInvalidFileException("Field " + fieldName + " is not a valid field");
         };
     }
