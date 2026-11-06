@@ -86,8 +86,20 @@ public class FieldTest {
         boolean success = player.moveRight();
         assertTrue(success);
         assertEquals(1, player.getRow());
-        assertEquals(1, player.getRow());
         assertEquals(4, player.getCol());
         assertFalse(gameBoard.isFinished());
+    }
+
+    // B · Eis: `#o@@#x#` -> the wall stops the player on the second ice field
+    @Test
+    public void iceFieldStopsBeforeWall() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/iceWall.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        boolean success = player.moveRight();
+        assertTrue(success);
+        assertEquals(1, player.getRow());
+        assertEquals(3, player.getCol());
     }
 }
