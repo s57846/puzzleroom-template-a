@@ -76,6 +76,31 @@ public class FieldTest {
         assertTrue(gameBoard.isFinished());
     }
 
+    // B · Eis: `#o@@ x#` -> player slides over the ice and stops on the free field left of the finish
+    @Test
+    public void iceFieldStopsOnFreeField() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/iceFree.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        boolean success = player.moveRight();
+        assertTrue(success);
+        assertEquals(1, player.getRow());
+        assertEquals(4, player.getCol());
+        assertFalse(gameBoard.isFinished());
+    }
+
+    // B · Eis: `#o@@#x#` -> the wall stops the player on the second ice field
+    @Test
+    public void iceFieldStopsBeforeWall() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"src/test/resources/iceWall.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        boolean success = player.moveRight();
+        assertTrue(success);
+    }      
+      
     // A · Einbahn: The player stands on `>` with a free field left and right of it
     @Test
     public void oneWayFieldLeaveInArrowDirection() throws Exception {
