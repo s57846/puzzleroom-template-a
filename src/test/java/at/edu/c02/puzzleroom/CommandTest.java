@@ -11,7 +11,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CommandTest {
     @Test
@@ -67,5 +69,26 @@ public class CommandTest {
         assertEquals(4, player.getStepCount());
         // Every `show` prints exactly one `*` (the player) -> the room was shown once
         assertEquals(1, output.toString().chars().filter(c -> c == '*').count());
+    }
+
+    // C · fastmove: `fastmove d d r` stops at the wall, the first move stays, `r` is skipped
+    @Test
+    public void fastmoveStopsAtBlockedMove() throws Exception {
+        GameBoard gameBoard = new GameBoardImpl();
+        new CommandLoad(new String[]{"test.maze"}).execute(gameBoard);
+        Player player = gameBoard.getPlayer();
+
+        try {
+            new CommandFastmove(new String[]{"d", "d", "r"}).execute(gameBoard);
+            fail("Expected PuzzleRoomInvalidMoveException");
+        } catch (PuzzleRoomInvalidMoveException expected) {
+            // the second `d` hits the wall
+        }
+
+        // Only the first move was done: player is directly below the start field
+        assertEquals(1, player.getStepCount());
+        assertEquals(2, player.getRow());
+        assertEquals(1, player.getCol());
+        assertFalse(gameBoard.isFinished());
     }
 }
